@@ -1,0 +1,27 @@
+message TodoRequest {
+  string greeting = 1;
+}
+
+message TodoResponse {
+  string reply = 1;
+}
+
+service AddTodoService {
+  rpc SayHello(TodoRequest) returns
+  (TodoResponse);
+}
+
+service DeleteTodoService {
+  rpc SayHello(TodoRequest) returns
+  (TodoResponse);
+}
+
+service ClearTodoService {
+  rpc SayHello(TodoRequest) returns
+  (TodoResponse);
+}
+
+service ListTodoService {
+  rpc SayHello(TodoRequest) returns
+  (TodoResponse);
+}
