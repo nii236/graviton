@@ -9,5 +9,8 @@ It uses the following technologies:
 - node.js
 - React.js
 - gRPC
+- electron
 
 Stay tuned for more information!
+
+
