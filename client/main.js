@@ -1,4 +1,5 @@
 var app = require('app');
+var ipc = require('ipc');
 var BrowserWindow = require('browser-window');
 require('crash-reporter').start();
 app.on('window-all-closed', function() {
@@ -14,4 +15,10 @@ app.on('ready', function() {
   mainWindow.on('closed', function() {
     mainWindow = null;
   });
+
+});
+
+ipc.on('ping', function(event, arg) {
+  console.log("Ping received");
+  event.sender.send('pingResponse', 'pong');
 });

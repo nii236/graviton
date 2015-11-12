@@ -5,40 +5,44 @@ var ROOT_PATH = path.resolve(__dirname);
 var HtmlwebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: [path.resolve(ROOT_PATH, 'client', 'src', 'entry')],
+  entry: [path.resolve(ROOT_PATH, 'client/src/entry.js')],
   resolve: {
     extensions: [
       '',
       '.js',
       '.jsx',
-      '.css',
-      '.png',
-      '.svg',
-      '.gif',
-      '.jpg',
-      '.jpeg'
     ],
     root: [ path.resolve(__dirname) ]
   },
+
   output: {
     path: path.resolve(ROOT_PATH, 'client', 'build'),
     filename: 'bundle.js',
     publicPath: 'http://localhost:8080/build/'
   },
-  module: {
-    loaders: [
-      { test: /\.(js|jsx)$/, loader: 'babel-loader', exclude: /node_modules/ },
-      { test: /\.css$/, loader: 'style-loader!css-loader' },
-      { test: /\.less$/, loader: 'style-loader!css-loader!less-loader'}
-    ]
+
+  devServer: {
+    contentBase: './client/build',
+    publicPath: 'http://localhost:8080/build/'
   },
+
+  target: 'atom',
+
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.IgnorePlugin(new RegExp("^(fs|ipc)$")),
     new HtmlwebpackPlugin({
       title: 'Graviton App',
       template: 'client/src/utils/HTMLWebpackTemplate.html',
       inject: 'body'
     })
-  ]
+  ],
+
+  module: {
+    loaders: [
+      { test: /\.(js|jsx)$/, loader: 'babel-loader', exclude: /node_modules/ },
+      { test: /\.less$/, loader: 'style-loader!css-loader!less-loader'}
+    ]
+  },
+
+  devtool: 'eval-source-map'
 }

@@ -7,7 +7,7 @@
   "scripts": {
     "start": "./node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron ./client/main.js",
     "build": "./node_modules/.bin/webpack",
-    "watch": "./node_modules/.bin/webpack-dev-server --progress --colors --hot --inline --history-api-fallback",
+    "watch": "./node_modules/.bin/webpack-dev-server",
     "electron-rebuild": "./node_modules/.bin/electron-rebuild"
   },
   "author": "John Nguyen",
@@ -18,7 +18,7 @@
     "babel-loader": "^5.2.2",
     "css-loader": "^0.15.1",
     "electron-packager": "^4.1.3",
-    "electron-rebuild": "^0.2.2",
+    "electron-rebuild": "^1.0.2",
     "eslint": "^1.9.0",
     "eslint-plugin-react": "^3.8.0",
     "html-webpack-plugin": "^1.6.2",
@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "electron-prebuilt": "^0.28.3",
-    "react": "^0.13.3"
+    "react": "^0.13.3",
+    "grpc": "^0.11.1"
   }
 }
