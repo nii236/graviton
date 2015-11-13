@@ -9,10 +9,8 @@ It is generated from these files:
 	todoRPC.proto
 
 It has these top-level messages:
-	EmptyMessage
 	AddTodoRequest
 	AddTodoResponse
-	AllTodos
 */
 package todo
 
@@ -30,13 +28,6 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
-type EmptyMessage struct {
-}
-
-func (m *EmptyMessage) Reset()         { *m = EmptyMessage{} }
-func (m *EmptyMessage) String() string { return proto.CompactTextString(m) }
-func (*EmptyMessage) ProtoMessage()    {}
-
 type AddTodoRequest struct {
 	Todo string `protobuf:"bytes,1,opt,name=todo" json:"todo,omitempty"`
 }
@@ -53,127 +44,62 @@ func (m *AddTodoResponse) Reset()         { *m = AddTodoResponse{} }
 func (m *AddTodoResponse) String() string { return proto.CompactTextString(m) }
 func (*AddTodoResponse) ProtoMessage()    {}
 
-type AllTodos struct {
-	Todos []string `protobuf:"bytes,1,rep,name=todos" json:"todos,omitempty"`
-}
-
-func (m *AllTodos) Reset()         { *m = AllTodos{} }
-func (m *AllTodos) String() string { return proto.CompactTextString(m) }
-func (*AllTodos) ProtoMessage()    {}
-
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context
 var _ grpc.ClientConn
 
-// Client API for AddTodo service
+// Client API for Todo service
 
-type AddTodoClient interface {
-	AddTodoService(ctx context.Context, in *AddTodoRequest, opts ...grpc.CallOption) (*AddTodoResponse, error)
+type TodoClient interface {
+	AddTodo(ctx context.Context, in *AddTodoRequest, opts ...grpc.CallOption) (*AddTodoResponse, error)
 }
 
-type addTodoClient struct {
+type todoClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewAddTodoClient(cc *grpc.ClientConn) AddTodoClient {
-	return &addTodoClient{cc}
+func NewTodoClient(cc *grpc.ClientConn) TodoClient {
+	return &todoClient{cc}
 }
 
-func (c *addTodoClient) AddTodoService(ctx context.Context, in *AddTodoRequest, opts ...grpc.CallOption) (*AddTodoResponse, error) {
+func (c *todoClient) AddTodo(ctx context.Context, in *AddTodoRequest, opts ...grpc.CallOption) (*AddTodoResponse, error) {
 	out := new(AddTodoResponse)
-	err := grpc.Invoke(ctx, "/todo.AddTodo/AddTodoService", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/todo.Todo/AddTodo", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// Server API for AddTodo service
+// Server API for Todo service
 
-type AddTodoServer interface {
-	AddTodoService(context.Context, *AddTodoRequest) (*AddTodoResponse, error)
+type TodoServer interface {
+	AddTodo(context.Context, *AddTodoRequest) (*AddTodoResponse, error)
 }
 
-func RegisterAddTodoServer(s *grpc.Server, srv AddTodoServer) {
-	s.RegisterService(&_AddTodo_serviceDesc, srv)
+func RegisterTodoServer(s *grpc.Server, srv TodoServer) {
+	s.RegisterService(&_Todo_serviceDesc, srv)
 }
 
-func _AddTodo_AddTodoService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+func _Todo_AddTodo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
 	in := new(AddTodoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
-	out, err := srv.(AddTodoServer).AddTodoService(ctx, in)
+	out, err := srv.(TodoServer).AddTodo(ctx, in)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-var _AddTodo_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "todo.AddTodo",
-	HandlerType: (*AddTodoServer)(nil),
+var _Todo_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "todo.Todo",
+	HandlerType: (*TodoServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "AddTodoService",
-			Handler:    _AddTodo_AddTodoService_Handler,
-		},
-	},
-	Streams: []grpc.StreamDesc{},
-}
-
-// Client API for ListTodo service
-
-type ListTodoClient interface {
-	ListTodoService(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*AllTodos, error)
-}
-
-type listTodoClient struct {
-	cc *grpc.ClientConn
-}
-
-func NewListTodoClient(cc *grpc.ClientConn) ListTodoClient {
-	return &listTodoClient{cc}
-}
-
-func (c *listTodoClient) ListTodoService(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*AllTodos, error) {
-	out := new(AllTodos)
-	err := grpc.Invoke(ctx, "/todo.ListTodo/ListTodoService", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// Server API for ListTodo service
-
-type ListTodoServer interface {
-	ListTodoService(context.Context, *EmptyMessage) (*AllTodos, error)
-}
-
-func RegisterListTodoServer(s *grpc.Server, srv ListTodoServer) {
-	s.RegisterService(&_ListTodo_serviceDesc, srv)
-}
-
-func _ListTodo_ListTodoService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
-	in := new(EmptyMessage)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	out, err := srv.(ListTodoServer).ListTodoService(ctx, in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-var _ListTodo_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "todo.ListTodo",
-	HandlerType: (*ListTodoServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "ListTodoService",
-			Handler:    _ListTodo_ListTodoService_Handler,
+			MethodName: "AddTodo",
+			Handler:    _Todo_AddTodo_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{},
