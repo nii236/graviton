@@ -4,6 +4,8 @@ var grpc = require('grpc');
 var PROTO_PATH = __dirname + '/protos/todoRPC.proto';
 var todoProto = grpc.load(PROTO_PATH).todo;
 var BrowserWindow = require('browser-window');
+var spawn = require('child_process').spawn
+var goBackend = spawn('./server/main', [], {stdio: 'inherit'})
 require('crash-reporter').start();
 
 app.on('window-all-closed', function() {
@@ -12,8 +14,16 @@ app.on('window-all-closed', function() {
   }
 });
 
+app.on('quit', function() {
+  if (process.platform != 'darwin') {
+    app.quit();
+  }
+  goBackend.kill();
+});
+
+
+
 app.on('ready', function() {
-  console.log(PROTO_PATH)
   mainWindow = new BrowserWindow({width: 1360, height: 800});
   var htmlPath = 'file://' + __dirname + '/client/build/index.html'
   mainWindow.loadUrl(htmlPath);

@@ -15,9 +15,23 @@ import (
 type addTodoServer struct{}
 type listTodoServer struct{}
 
+type todoItem struct {
+	Todo string
+}
+
+type todosList struct {
+	Todos []todoItem
+}
+
+var todos todosList
+
 // AddTodoService implements pb.AddTodoServer
 func (s addTodoServer) AddTodo(ctx context.Context, in *pb.AddTodoRequest) (*pb.AddTodoResponse, error) {
 	fmt.Println("AddTodoRequest received, " + in.Todo)
+	todo := todoItem{Todo: in.Todo}
+	todos.Todos = append(todos.Todos, todo)
+	fmt.Println("Current todos:", todos.Todos)
+
 	return &pb.AddTodoResponse{Response: "Added todo item " + in.Todo}, nil
 }
 
