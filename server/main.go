@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	pb "github.com/nii236/graviton/protos"
 	"golang.org/x/net/context"
@@ -14,16 +15,25 @@ import (
 type addTodoServer struct{}
 type listTodoServer struct{}
 
-var port = "localhost:8888"
-
 // AddTodoService implements pb.AddTodoServer
 func (s addTodoServer) AddTodo(ctx context.Context, in *pb.AddTodoRequest) (*pb.AddTodoResponse, error) {
-	fmt.Println("AddTodoRequest received")
-	return &pb.AddTodoResponse{Response: "Hello"}, nil
+	fmt.Println("AddTodoRequest received, " + in.Todo)
+	return &pb.AddTodoResponse{Response: "Added todo item " + in.Todo}, nil
 }
 
 func main() {
-	lis, err := net.Listen("tcp", port)
+	port := os.Getenv("PORT")
+	host := os.Getenv("HOST")
+
+	if len(port) == 0 {
+		port = "3000"
+	}
+
+	if len(host) == 0 {
+		host = "localhost"
+	}
+
+	lis, err := net.Listen("tcp", host+":"+port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

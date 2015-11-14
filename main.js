@@ -39,4 +39,4 @@ ipc.on('AddTodo', function(event, arg) {
   });
 })
 
-var client = new todoProto.Todo('localhost:8888', grpc.Credentials.createInsecure());
+var client = new todoProto.Todo('localhost:3000', grpc.Credentials.createInsecure());

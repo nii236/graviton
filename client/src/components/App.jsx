@@ -4,24 +4,71 @@ import ipc from 'ipc';
 export default class App extends React.Component {
   constructor (props) {
     super(props)
-    this.handlePing = this.handlePing.bind(this);
-    this.handleAddTodo = this.handleAddTodo.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmitResponse = this.handleSubmitResponse.bind(this);
+    this.state = {
+      FinishedEdit: false,
+      Editing: false,
+      Value: '',
+      EditText: '',
+      SubmitDisabled: true
+    };
   }
 
-  handlePing() {
-    ipc.send('ping', 'fromFront');
+  handleChange(event) {
+    const stringLength = event.target.value.length;
+    const requiredLength = 1;
+    if (stringLength > requiredLength) {
+      this.setState({
+        EditText: event.target.value,
+        SubmitDisabled: false
+      });
+    } else {
+      this.setState({
+        EditText: event.target.value,
+        SubmitDisabled: true
+      });
+    }
   }
 
-  handleAddTodo() {
-    ipc.send('AddTodo', 'fromFront');
+  handleKeyDown(event) {
+    const submitDisabled = this.state.SubmitDisabled;
+    const ENTER_KEY = 13;
+    if (event.keyCode === ENTER_KEY && !submitDisabled) {
+      this.handleSubmitResponse();
+    }
+  }
+
+  handleClick() {
+    const submitDisabled = this.state.SubmitDisabled;
+    if (!submitDisabled) {
+      this.handleSubmitResponse();
+    }
+  }
+
+  handleSubmitResponse() {
+    ipc.send('AddTodo', this.state.EditText);
+    this.setState({EditText: ''});
   }
 
   render() {
     return (
       <div className="App">
-        <div>Welcome to Graviton!</div>
-        <button onClick={this.handlePing}>Ping</button>
-        <button onClick={this.handleAddTodo}>AddTodo</button>
+        <h1>Welcome to Graviton!</h1>
+          <input
+              onChange={this.handleChange}
+              onKeyDown={this.handleKeyDown}
+              placeholder='Your Todo'
+              type='text'
+              value={this.state.EditText} />
+          <input
+              disabled={this.state.SubmitDisabled}
+              onClick={this.handleClick}
+              type='button'
+              value='Send'
+          />
       </div>
     )
   }
