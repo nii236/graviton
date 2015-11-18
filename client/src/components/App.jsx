@@ -1,9 +1,10 @@
 import React from 'react';
+import TodoList from 'client/src/components/TodoList';
 import ipc from 'ipc';
 
 export default class App extends React.Component {
   constructor (props) {
-    super(props)
+    super(props);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -58,18 +59,19 @@ export default class App extends React.Component {
       <div className="App">
         <h1>Welcome to Graviton!</h1>
           <input
-              onChange={this.handleChange}
-              onKeyDown={this.handleKeyDown}
-              placeholder='Your Todo'
-              type='text'
-              value={this.state.EditText} />
+            onChange={this.handleChange}
+            onKeyDown={this.handleKeyDown}
+            placeholder='Your Todo'
+            type='text'
+            value={this.state.EditText} />
           <input
-              disabled={this.state.SubmitDisabled}
-              onClick={this.handleClick}
-              type='button'
-              value='Send'
+            disabled={this.state.SubmitDisabled}
+            onClick={this.handleClick}
+            type='button'
+            value='Send'
           />
+          <TodoList/>
       </div>
-    )
+    );
   }
 }

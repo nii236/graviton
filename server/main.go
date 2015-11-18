@@ -12,27 +12,24 @@ import (
 	"google.golang.org/grpc"
 )
 
-type addTodoServer struct{}
-type listTodoServer struct{}
+type TodoServer struct{}
 
-type todoItem struct {
-	Todo string
-}
+var todos pb.TodoList
 
-type todosList struct {
-	Todos []todoItem
-}
-
-var todos todosList
-
-// AddTodoService implements pb.AddTodoServer
-func (s addTodoServer) AddTodo(ctx context.Context, in *pb.AddTodoRequest) (*pb.AddTodoResponse, error) {
+// AddTodo implements pb.AddTodoServer
+func (s TodoServer) AddTodo(ctx context.Context, in *pb.AddTodoRequest) (*pb.AddTodoResponse, error) {
 	fmt.Println("AddTodoRequest received, " + in.Todo)
-	todo := todoItem{Todo: in.Todo}
-	todos.Todos = append(todos.Todos, todo)
-	fmt.Println("Current todos:", todos.Todos)
+	todo := pb.TodoItem{Item: in.Todo}
+	todos.TodoItems = append(todos.TodoItems, &todo)
+	fmt.Println("Current todos:", todos)
 
 	return &pb.AddTodoResponse{Response: "Added todo item " + in.Todo}, nil
+}
+
+// ListTodo implements pb.ListTodoServer
+func (s TodoServer) ListTodo(ctx context.Context, in *pb.ListTodoRequest) (*pb.ListTodoResponse, error) {
+	fmt.Println("ListTodoRequest received")
+	return &pb.ListTodoResponse{TodoItems: &todos.TodoItems}, nil
 }
 
 func main() {
@@ -52,6 +49,6 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterTodoServer(s, &addTodoServer{})
+	pb.RegisterTodoServer(s, &TodoServer{})
 	s.Serve(lis)
 }

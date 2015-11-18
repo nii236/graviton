@@ -10,7 +10,25 @@ message AddTodoResponse {
   string response = 1;
 }
 
+message TodoItem {
+  string item = 1;
+}
+
+message TodoList {
+  repeated TodoItem TodoItems = 1;
+}
+
+message ListTodoRequest {
+  string request = 1;
+}
+
+message ListTodoResponse {
+  TodoList TodoItems = 1;
+}
+
 service Todo {
-  rpc AddTodo(AddTodoRequest) returns
+  rpc AddTodo(AddTodoRequest) returns 
   (AddTodoResponse);
+  rpc ListTodo(ListTodoRequest) returns 
+  (ListTodoResponse);
 }

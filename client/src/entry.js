@@ -12,4 +12,8 @@ ipc.on('AddTodoResponse', (arg) => {
   console.log(arg);
 });
 
+ipc.on('GetTodoListResponse', (arg) => {
+  console.log(arg);
+});
+
 React.render(<App/>, document.getElementById('content'));

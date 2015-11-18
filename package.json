@@ -15,6 +15,7 @@
   "devDependencies": {
     "babel": "^5.6.10",
     "babel-core": "^5.6.11",
+    "babel-eslint": "^4.1.5",
     "babel-loader": "^5.2.2",
     "css-loader": "^0.15.1",
     "electron-packager": "^4.1.3",
@@ -31,7 +32,8 @@
     "webpack-dev-server": "^1.9.0"
   },
   "dependencies": {
-    "react": "^0.13.3",
-    "grpc": "^0.11.1"
+    "alt": "^0.17.9",
+    "grpc": "^0.11.1",
+    "react": "^0.13.3"
   }
 }
