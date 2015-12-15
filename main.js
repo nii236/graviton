@@ -57,7 +57,7 @@ ipc.on('ListTodo', function(event, arg) {
       console.log(err);
       return;
     }
-    event.sender.send('GetTodoListResponse: ', response);
+    event.sender.send('GetTodoListResponse', response);
   })
 })
 

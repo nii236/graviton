@@ -31,6 +31,7 @@ func (s TodoServer) AddTodo(ctx context.Context, in *pb.AddTodoRequest) (*pb.Add
 func (s TodoServer) ListTodo(ctx context.Context, in *pb.ListTodoRequest) (*pb.ListTodoResponse, error) {
 	fmt.Println("ListTodoRequest received")
 	res := &pb.ListTodoResponse{TodoItems: &todos}
+	fmt.Println(res)
 	return res, nil
 }
 
