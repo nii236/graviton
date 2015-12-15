@@ -12,11 +12,12 @@ import (
 	"google.golang.org/grpc"
 )
 
+// TodoServer contains the collection of methods used in the gRPC Todo
 type TodoServer struct{}
 
 var todos pb.TodoList
 
-// AddTodo implements pb.AddTodoServer
+// AddTodo adds a new TodoItem
 func (s TodoServer) AddTodo(ctx context.Context, in *pb.AddTodoRequest) (*pb.AddTodoResponse, error) {
 	fmt.Println("AddTodoRequest received, " + in.Todo)
 	todo := pb.TodoItem{Item: in.Todo}
@@ -26,13 +27,15 @@ func (s TodoServer) AddTodo(ctx context.Context, in *pb.AddTodoRequest) (*pb.Add
 	return &pb.AddTodoResponse{Response: "Added todo item " + in.Todo}, nil
 }
 
-// ListTodo implements pb.ListTodoServer
+// ListTodo returns a slice of TodoItems
 func (s TodoServer) ListTodo(ctx context.Context, in *pb.ListTodoRequest) (*pb.ListTodoResponse, error) {
 	fmt.Println("ListTodoRequest received")
-	return &pb.ListTodoResponse{TodoItems: &todos.TodoItems}, nil
+	res := &pb.ListTodoResponse{TodoItems: &todos}
+	return res, nil
 }
 
 func main() {
+	fmt.Println("Starting graviton backend...")
 	port := os.Getenv("PORT")
 	host := os.Getenv("HOST")
 

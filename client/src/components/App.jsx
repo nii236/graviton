@@ -56,7 +56,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <div className='App'>
         <h1>Welcome to Graviton!</h1>
           <input
             onChange={this.handleChange}
