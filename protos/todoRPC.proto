@@ -2,14 +2,25 @@ syntax = "proto3";
 
 package todo;
 
+// Requests
 message AddTodoRequest {
   string todo = 1;
 }
 
+message ListTodoRequest {
+  string request = 1;
+}
+
+// Responses
 message AddTodoResponse {
   string response = 1;
 }
 
+message ListTodoResponse {
+  TodoList TodoItems = 1;
+}
+
+// Structs
 message TodoItem {
   string item = 1;
 }
@@ -18,17 +29,10 @@ message TodoList {
   repeated TodoItem TodoItems = 1;
 }
 
-message ListTodoRequest {
-  string request = 1;
-}
-
-message ListTodoResponse {
-  TodoList TodoItems = 1;
-}
-
+// Services
 service Todo {
-  rpc AddTodo(AddTodoRequest) returns 
+  rpc AddTodo(AddTodoRequest) returns
   (AddTodoResponse);
-  rpc ListTodo(ListTodoRequest) returns 
+  rpc ListTodo(ListTodoRequest) returns
   (ListTodoResponse);
 }
