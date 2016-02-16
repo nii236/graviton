@@ -1,5 +1,5 @@
 import React from 'react';
-import TodoList from 'client/src/components/TodoList';
+import TodoList from 'client/components/TodoList';
 import ipc from 'ipc';
 
 export default class App extends React.Component {
@@ -50,8 +50,14 @@ export default class App extends React.Component {
   }
 
   handleSubmitResponse() {
+    console.log('Submitting todo');
     ipc.send('AddTodo', this.state.EditText);
     this.setState({EditText: ''});
+  }
+
+  handlePing() {
+    console.log('ping');
+    ipc.send('Ping')
   }
 
   render() {
@@ -69,6 +75,11 @@ export default class App extends React.Component {
             onClick={this.handleClick}
             type='button'
             value='Send'
+          />
+          <input
+            onClick={this.handlePing}
+            type='button'
+            value='Ping'
           />
           <TodoList/>
       </div>

@@ -8,6 +8,7 @@ export default class TodoList extends React.Component {
   }
 
   getTodoList() {
+    console.log('Get list of todos')
     ipc.send('ListTodo');
   }
 

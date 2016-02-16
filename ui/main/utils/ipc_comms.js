@@ -1,5 +1,8 @@
 var ipc = require('ipc');
 var grpc = require('grpc');
+var path = require('path');
+var PROTO_PATH = path.resolve('../protos/todoRPC.proto');
+console.log(PROTO_PATH)
 var todoProto = grpc.load(PROTO_PATH).todo;
 
 ipc.on('ListTodo', function(event, arg) {
@@ -13,7 +16,7 @@ ipc.on('ListTodo', function(event, arg) {
   });
 });
 
-ipc.on('ping', function(event, arg) {
+ipc.on('Ping', function(event, arg) {
   console.log('Ping received');
   event.sender.send('pingResponse', 'pong');
   console.log(client);
@@ -30,5 +33,4 @@ ipc.on('AddTodo', function(event, arg) {
   });
 });
 
-
-var client = new todoProto.Todo('localhost:3000', grpc.Credentials.createInsecure());
+if (!client) var client = new todoProto.Todo('localhost:3000', grpc.Credentials.createInsecure());

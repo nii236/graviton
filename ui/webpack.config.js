@@ -1,48 +1,89 @@
-var webpack = require('webpack');
 var path = require('path');
+var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 var TARGET = process.env.TARGET;
-var ROOT_PATH = path.resolve(__dirname);
-var HtmlwebpackPlugin = require('html-webpack-plugin');
+var config = {};
 
-module.exports = {
-  entry: [path.resolve(ROOT_PATH, 'client/src/entry.js')],
-  resolve: {
-    extensions: [
-      '',
-      '.js',
-      '.jsx',
-    ],
-    root: [ path.resolve(__dirname) ]
-  },
-
-  output: {
-    path: path.resolve(ROOT_PATH, 'client', 'build'),
-    filename: 'bundle.js',
-    publicPath: 'http://localhost:8080/build/'
-  },
-
-  devServer: {
-    contentBase: './client/build',
-    publicPath: 'http://localhost:8080/build/'
-  },
-
+config = {
   target: 'atom',
-
+  devtool: 'eval-source-map',
+  entry: [
+    'webpack-dev-server/client?http://localhost:3001',
+    'webpack/hot/only-dev-server',
+    './client/index'
+  ],
+  output: {
+    path: path.join(__dirname, 'build'),
+    filename: 'bundle.js'
+  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new HtmlwebpackPlugin({
-      title: 'Graviton App',
-      template: 'client/src/utils/HTMLWebpackTemplate.html',
-      inject: 'body'
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'client/utils/template.html'
     })
   ],
-
   module: {
-    loaders: [
-      { test: /\.(js|jsx)$/, loader: 'babel-loader', exclude: /node_modules/ },
-      { test: /\.less$/, loader: 'style-loader!css-loader!less-loader'}
-    ]
+    loaders: [{
+      test: /\.js$/,
+      loader: 'babel',
+      include: path.join(__dirname, 'client'),
+      query: {
+        presets: ['react', 'es2015']
+      }
+    }]
   },
+  resolve: {
+    root: [
+      path.resolve(__dirname)
+    ]
+  }
+};
 
-  devtool: 'eval-source-map'
+if (TARGET === 'prod') {
+  config = {
+    target: 'atom',
+    devtool: 'source-map',
+    entry: [
+      './client/index'
+    ],
+    output: {
+      path: path.join(__dirname, 'build'),
+      filename: 'bundle.js',
+      publicPath: './'
+    },
+    plugins: [
+      new webpack.NoErrorsPlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        compressor: { warnings: false },
+        sourceMap: false
+      }),
+      new webpack.DefinePlugin({
+        'process.env': { NODE_ENV: JSON.stringify('production') }
+      }),
+      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.OccurenceOrderPlugin(),
+      new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: 'client/utils/template.html'
+      })
+    ],
+    module: {
+      loaders: [{
+        test: /\.js$/,
+        loader: 'babel',
+        include: path.join(__dirname, 'client'),
+        query: {
+          presets: ['react', 'es2015']
+        }
+      }]
+    },
+    resolve: {
+      root: [
+        path.resolve(__dirname)
+      ]
+    }
+  };
 }
+
+module.exports = config;
